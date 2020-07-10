@@ -3,9 +3,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 
-const {
-  port
-} = require('./config/config')
+const { port } = require('./config/config')
 
 const users = require('./routes/api/users')
 const profile = require('./routes/api/profile')
