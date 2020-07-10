@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const passport = require('passport')
 
 const {
   port
@@ -33,7 +34,10 @@ mongoose.connect(db, {
     console.log(error)
   })
 
-app.get("/", (req, res) => res.send("hello world"));
+//passport
+app.use(passport.initialize());
+
+require('./config/passport')(passport)
 
 //use routes
 app.use('/api/users', users)

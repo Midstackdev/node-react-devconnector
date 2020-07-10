@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 const gravatr = require('gravatar')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const { tokenSecret } = require('../../config/config')
+const passport = require('passport')
 
 const User = require('../../models/User')
 
@@ -38,6 +41,46 @@ router.post('/register', (req, res) => {
         })
       }
     })
+})
+
+router.post('/login', (req, res) => {
+  const email = req.body.email
+  const password = req.body.password
+
+  User.findOne({ email })
+    .then(user => {
+      if(!user) {
+        return res.status(404).json({ email: 'User not found' })
+      }
+
+      bcrypt.compare(password, user.password)
+        .then(isMatch => {
+          if(isMatch) {
+            const payload = { name: user.name, id: user._id, email: user.email, avatar: user.avatar }
+            
+            jwt.sign(payload, tokenSecret, { expiresIn: 3600 }, 
+              (err, token) => {
+                return res.json({
+                  success: true,
+                  data: payload,
+                  token: `Bearer ${token}`
+                })
+            })
+          } else {
+            return res.status(400).json({ password: "Password incorrect." });
+          }
+        })
+    })
+})
+
+router.get('/me', passport.authenticate('jwt', { session: false }), (req, res) => {
+  const payload = {
+    name: req.user.name,
+    id: req.user._id,
+    email: req.user.email,
+    avatar: req.user.avatar
+  }
+  return res.json({ data: payload })
 })
 
 module.exports = router
