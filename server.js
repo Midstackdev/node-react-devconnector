@@ -23,7 +23,8 @@ const db = require('./config/keys').mongoURI
 mongoose.Promise = global.Promise
 mongoose.connect(db, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
   })
   .then(() => {
     console.log('Mongo Atlas connected')
