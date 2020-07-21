@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import Proptypes from 'prop-types'
 import TextFieldGroup from '../common/TextFieldGroup'
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup'
@@ -81,7 +81,7 @@ class CreateProfile extends Component {
         intagram: profile.instagram,
       })
 
-      console.log(this.state)
+      // console.log(this.state)
     }
   }
 
@@ -176,9 +176,9 @@ class CreateProfile extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <a href="dashboard.html" className="btn btn-light">
+              <Link to="/dashboard" className="btn btn-light">
                 Go Back
-              </a>
+              </Link>
               <h1 className="display-4 text-center">Edit Profile</h1>
 
               <small className="d-block pb-3">* = required field</small>

@@ -64,3 +64,25 @@ export const deleteAccount = () => dispatch => {
       )
   }
 }
+
+export const addExperience = (payload, history) => dispatch => {
+  axios.post(`/api/profile/experience`, payload)
+    .then(response => history.push('/dashboard'))
+    .catch(err => 
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data.errors
+      })  
+    )
+}
+
+export const addEducation = (payload, history) => dispatch => {
+  axios.post(`/api/profile/education`, payload)
+    .then(response => history.push('/dashboard'))
+    .catch(err => 
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data.errors
+      })  
+    )
+}
