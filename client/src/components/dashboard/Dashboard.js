@@ -1,13 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { getCurrentProfile } from '../../actions/profile'
+import { getCurrentProfile, deleteAccount } from '../../actions/profile'
 import Spinner from '../common/Spinner'
 import { Link } from 'react-router-dom'
+import ProfileActions from './ProfileActions'
 
 class Dashboard extends Component {
   componentDidMount() {
     this.props.getCurrentProfile()
+  }
+
+  onDeleteClick(e) {
+    console.log('del')
+    this.props.deleteAccount()
   }
 
   render() {
@@ -20,7 +26,14 @@ class Dashboard extends Component {
       dashboardContent = <Spinner />
     } else {
       if(Object.keys(profile).length > 0) {
-        dashboardContent = <h4>TODO: DISPLAY PROFILE</h4>
+        dashboardContent = (
+          <div>
+            <p className="lead text-muted">
+              Welcome <Link to={`/profile/${profile.handle}`}>{ user.name }</Link>
+            </p>
+            <ProfileActions />
+          </div>
+        )
       }
       else {
         dashboardContent = (
@@ -41,18 +54,6 @@ class Dashboard extends Component {
             <div className="col-md-12">
               <h1 className="display-4">Dashboard</h1>
               <p className="lead text-muted">{dashboardContent}</p>
-
-              <div className="btn-group mb-4" role="group">
-                <a href="edit-profile.html" className="btn btn-light">
-                  <i className="fas fa-user-circle text-info mr-1"></i> Edit Profile</a>
-                <a href="add-experience.html" className="btn btn-light">
-                  <i className="fab fa-black-tie text-info mr-1"></i>
-                  Add Experience</a>
-                <a href="add-education.html" className="btn btn-light">
-                  <i className="fas fa-graduation-cap text-info mr-1"></i>
-                  Add Education</a>
-              </div>
-
 
               <div>
                 <h4 className="mb-2">Experience Credentials</h4>
@@ -124,7 +125,7 @@ class Dashboard extends Component {
               </div>
 
               <div style={{marginBottom: '60px'}}>
-                <button className="btn btn-danger">
+                <button onClick={this.onDeleteClick.bind(this)} className="btn btn-danger">
                   Delete My Account
                 </button>
               </div>
@@ -138,6 +139,7 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
+  deleteAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
 }
@@ -147,4 +149,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps, { getCurrentProfile })(Dashboard)
+export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(Dashboard)
