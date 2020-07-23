@@ -21,6 +21,7 @@ import PrivateRoute from './components/common/PrivateRoute'
 import './App.css';
 import store from './store'
 import { clearProfile } from './actions/profile';
+import Profiles from './components/profiles/Profiles';
 
 //check for token 
 if(localStorage.jwtToken) {
@@ -52,6 +53,7 @@ class App extends Component {
               <div className="container">
                 <Route path="/login" exact component={Login} />
                 <Route path="/register" exact component={Register} />
+                <Route path="/profiles" exact component={Profiles} />
                 <Switch>
                   <PrivateRoute path="/dashboard" exact component={Dashboard} />
                   <PrivateRoute path="/create-profile" exact component={CreateProfile} />

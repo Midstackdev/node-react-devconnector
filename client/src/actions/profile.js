@@ -3,7 +3,8 @@ import {
   GET_PROFILE,
   CLEAR_CURRENT_PROFILE,
   GET_ERRORS,
-  SET_AUTH_USER
+  SET_AUTH_USER,
+  GET_PROFILES
 } from './types'
 import axios from 'axios'
 
@@ -119,4 +120,21 @@ export const deleteEducation = (id) => dispatch => {
         payload: err.response.data.errors,
       })
     );
+}
+
+export const getProfiles = () => dispatch => {
+  dispatch(setProfileLoading())
+  axios.get(`/api/profile/all`)
+    .then(response =>
+      dispatch({
+        type: GET_PROFILES,
+        payload: response.data.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILES,
+        payload: {}
+      })
+    )
 }
