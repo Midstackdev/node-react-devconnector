@@ -22,6 +22,8 @@ import './App.css';
 import store from './store'
 import { clearProfile } from './actions/profile';
 import Profiles from './components/profiles/Profiles';
+import ProfileHandle from './components/profiles/ProfileHandle';
+import NotFound from './components/notfound/NotFound'
 
 //check for token 
 if(localStorage.jwtToken) {
@@ -54,6 +56,7 @@ class App extends Component {
                 <Route path="/login" exact component={Login} />
                 <Route path="/register" exact component={Register} />
                 <Route path="/profiles" exact component={Profiles} />
+                <Route path="/profile/:handle" exact component={ProfileHandle} />
                 <Switch>
                   <PrivateRoute path="/dashboard" exact component={Dashboard} />
                   <PrivateRoute path="/create-profile" exact component={CreateProfile} />
@@ -61,6 +64,7 @@ class App extends Component {
                   <PrivateRoute path="/add-experience" exact component={AddExperience} />
                   <PrivateRoute path="/add-education" exact component={AddEducation} />
                 </Switch>
+                <Route path="/not-found" exact component={NotFound} />
               </div>
             <Footer />
           </div>
