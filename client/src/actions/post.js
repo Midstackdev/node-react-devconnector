@@ -4,14 +4,51 @@ import {
   GET_POSTS,
   GET_ERRORS,
   POST_LOADING,
-  DELETE_POST
+  DELETE_POST,
+  GET_POST,
+  CLEAR_ERRORS
 } from './types'
 
 export const addPost = postData => dispatch => {
+  dispatch(clearErrors())
   axios.post(`/api/posts`, postData)
     .then(response =>
       dispatch({
         type: ADD_POST,
+        payload: response.data.data
+      })
+    )
+    .catch(error =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: error.response.data.errors
+      })
+    )
+}
+
+
+export const addComment = (postId, commentData) => dispatch => {
+  dispatch(clearErrors())
+  axios.post(`/api/posts/comment/${postId}`, commentData)
+    .then(response =>
+      dispatch({
+        type: GET_POST,
+        payload: response.data.data
+      })
+    )
+    .catch(error =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: error.response.data.errors
+      })
+    )
+}
+
+export const deleteComment = (postId, commentId) => dispatch => {
+  axios.post(`/api/posts/comment/${postId}/${commentId}`)
+    .then(response =>
+      dispatch({
+        type: GET_POST,
         payload: response.data.data
       })
     )
@@ -37,6 +74,24 @@ export const getPosts = () => dispatch => {
       dispatch({
         type: GET_POSTS,
         payload: {}
+      })
+    )
+}
+
+export const getPost = (id) => dispatch => {
+  dispatch(setPostLoading())
+  
+  axios.get(`/api/posts/${id}`)
+    .then(response =>
+      dispatch({
+        type: GET_POST,
+        payload: response.data.data
+      })
+    )
+    .catch(error =>
+      dispatch({
+        type: GET_POST,
+        payload: null
       })
     )
 }
@@ -86,5 +141,11 @@ export const removeLike = id => dispatch => {
 export const setPostLoading = () => {
   return {
     type: POST_LOADING
+  }
+}
+
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
   }
 }
